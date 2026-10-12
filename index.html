@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>외출 준비물 체크</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Apple SD Gothic Neo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', sans-serif;
+      background-color: #FAF6F0;
+      color: #4A3E3D;
+      line-height: 1.6;
+      padding: 24px 16px 48px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .app-container {
+      max-width: 520px;
+      margin: 0 auto;
+      background-color: #FFFFFF;
+      border-radius: 28px;
+      padding: 28px 20px;
+      box-shadow: 0 10px 30px rgba(184, 153, 126, 0.15);
+      border: 1px solid #F1E5DA;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .main-title {
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: #5C4033;
+      margin-bottom: 10px;
+      letter-spacing: -0.5px;
+    }
+
+    .sub-guide {
+      font-size: 1.05rem;
+      color: #7D6B62;
+      word-break: keep-all;
+      line-height: 1.5;
+    }
+
+    .story-section {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      margin-bottom: 34px;
+    }
+
+    .story-card {
+      background-color: #FFFDF9;
+      border: 1px solid #EFE4D8;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(110, 80, 50, 0.05);
+      transition: transform 0.2s ease;
+    }
+
+    .story-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .story-image-wrap {
+      width: 100%;
+      height: 230px;
+      background-color: #F4EAE0;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .story-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .story-desc {
+      padding: 14px 16px;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #5D4336;
+      background-color: #FFFDF9;
+      border-top: 1px solid #F6EDE3;
+    }
+
+    .checklist-section {
+      background-color: #FFF9F2;
+      border: 2px dashed #E5D0BC;
+      border-radius: 22px;
+      padding: 24px 18px;
+      margin-bottom: 28px;
+    }
+
+    .checklist-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #5C4033;
+      margin-bottom: 18px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .items-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: center;
+      background-color: #FFFFFF;
+      padding: 16px 20px;
+      border-radius: 16px;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s ease;
+      border: 1.5px solid #EFE0D2;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    }
+
+    .check-item:active {
+      transform: scale(0.985);
+    }
+
+    .check-item input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 30px;
+      height: 30px;
+      border: 2.5px solid #CDB198;
+      border-radius: 10px;
+      margin-right: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      background-color: #FFFDFB;
+      transition: all 0.2s ease;
+    }
+
+    .check-item input[type="checkbox"]:checked {
+      background-color: #9C5838;
+      border-color: #9C5838;
+    }
+
+    .check-item input[type="checkbox"]:checked::after {
+      content: '✔';
+      color: #FFFFFF;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .item-label {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #4A3E3D;
+      letter-spacing: -0.3px;
+      transition: color 0.2s ease;
+    }
+
+    .check-item input[type="checkbox"]:checked ~ .item-label {
+      color: #A3968F;
+      text-decoration: line-through;
+    }
+
+    .action-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 18px 20px;
+      font-size: 1.3rem;
+      font-weight: 800;
+      border: none;
+      border-radius: 18px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+      letter-spacing: -0.3px;
+    }
+
+    .btn-check {
+      background-color: #9C5838;
+      color: #FFFFFF;
+      box-shadow: 0 6px 16px rgba(156, 88, 56, 0.25);
+    }
+
+    .btn-check:hover {
+      background-color: #88482A;
+    }
+
+    .btn-check:active {
+      transform: translateY(2px);
+      box-shadow: 0 2px 6px rgba(156, 88, 56, 0.2);
+    }
+
+    .btn-reset {
+      background-color: #EDE2D5;
+      color: #6C5549;
+    }
+
+    .btn-reset:hover {
+      background-color: #E2D4C4;
+    }
+
+    .btn-reset:active {
+      transform: translateY(2px);
+    }
+
+    #resultMessage {
+      font-size: 1.2rem;
+      font-weight: 700;
+      text-align: center;
+      line-height: 1.5;
+      padding: 18px 20px;
+      border-radius: 16px;
+      display: none;
+      word-break: keep-all;
+      animation: fadeIn 0.25s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .msg-success {
+      background-color: #EBF6EC;
+      color: #276A3C;
+      border: 1.5px solid #C3E7C7;
+    }
+
+    .msg-warning {
+      background-color: #FFF2EB;
+      color: #BA4018;
+      border: 1.5px solid #FFD3BF;
+    }
+  </style>
+</head>
+<body>
+
+  <main class="app-container">
+    <header>
+      <h1 class="main-title">외출 준비물 체크</h1>
+      <p class="sub-guide">문을 나서기 전, 이야기 순서대로 차근차근 확인해 보세요!</p>
+    </header>
+
+    <section class="story-section" aria-label="외출 준비 순서 이야기">
+      <!-- 1단계 사진 카드 -->
+      <article class="story-card">
+        <div class="story-image-wrap">
+          <img 
+            src="scene1.jpg" 
+            alt="외출을 준비해요 사진" 
+            class="story-image"
+            onerror="this.onerror=null;this.src='https://placehold.co/600x400/EADCC9/5C4033?text=scene1.jpg';"
+          >
+        </div>
+        <p class="story-desc">외출을 준비해요</p>
+      </article>
+
+      <!-- 2단계 사진 카드 -->
+      <article class="story-card">
+        <div class="story-image-wrap">
+          <img 
+            src="scene2.jpg" 
+            alt="준비물을 확인해요 사진" 
+            class="story-image"
+            onerror="this.onerror=null;this.src='https://placehold.co/600x400/E5D5C1/5C4033?text=scene2.jpg';"
+          >
+        </div>
+        <p class="story-desc">준비물을 확인해요</p>
+      </article>
+
+      <!-- 3단계 사진 카드 -->
+      <article class="story-card">
+        <div class="story-image-wrap">
+          <img 
+            src="scene3.jpg" 
+            alt="즐겁게 출발해요 사진" 
+            class="story-image"
+            onerror="this.onerror=null;this.src='https://placehold.co/600x400/E0CEB7/5C4033?text=scene3.jpg';"
+          >
+        </div>
+        <p class="story-desc">즐겁게 출발해요</p>
+      </article>
+    </section>
+
+    <section class="checklist-section" aria-label="준비물 체크리스트">
+      <h2 class="checklist-title">🎒 챙길 준비물 목록</h2>
+      <div class="items-list">
+        <label class="check-item">
+          <input type="checkbox" name="item" value="휴대전화">
+          <span class="item-label">휴대전화</span>
+        </label>
+        <label class="check-item">
+          <input type="checkbox" name="item" value="지갑">
+          <span class="item-label">지갑</span>
+        </label>
+        <label class="check-item">
+          <input type="checkbox" name="item" value="물병">
+          <span class="item-label">물병</span>
+        </label>
+        <label class="check-item">
+          <input type="checkbox" name="item" value="우산">
+          <span class="item-label">우산</span>
+        </label>
+      </div>
+    </section>
+
+    <div class="action-buttons">
+      <button type="button" class="btn btn-check" id="checkButton">준비 확인</button>
+      <button type="button" class="btn btn-reset" id="resetButton">다시 확인하기</button>
+    </div>
+
+    <div id="resultMessage" role="status" aria-live="polite"></div>
+  </main>
+
+  <script>
+    const checkButton = document.getElementById('checkButton');
+    const resetButton = document.getElementById('resetButton');
+    const checkboxes = document.querySelectorAll('input[name="item"]');
+    const resultMessage = document.getElementById('resultMessage');
+
+    // '준비 확인' 버튼 이벤트 처리
+    checkButton.addEventListener('click', function () {
+      const uncheckedItems = [];
+
+      checkboxes.forEach(function (checkbox) {
+        if (!checkbox.checked) {
+          uncheckedItems.push(checkbox.value);
+        }
+      });
+
+      resultMessage.style.display = 'block';
+
+      if (uncheckedItems.length === 0) {
+        // 모든 준비물이 체크된 경우
+        resultMessage.className = 'msg-success';
+        resultMessage.textContent = '준비 완료! 즐겁게 다녀오세요.';
+      } else {
+        // 체크되지 않은 준비물이 남아 있는 경우
+        resultMessage.className = 'msg-warning';
+        resultMessage.textContent = '아직 챙기지 않은 준비물: ' + uncheckedItems.join(', ');
+      }
+
+      // 화면에 안내 메시지가 잘 보이도록 스크롤 이동
+      resultMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+
+    // '다시 확인하기' 버튼 이벤트 처리 (모든 체크 해제 및 초기화)
+    resetButton.addEventListener('click', function () {
+      checkboxes.forEach(function (checkbox) {
+        checkbox.checked = false;
+      });
+
+      resultMessage.style.display = 'none';
+      resultMessage.textContent = '';
+      resultMessage.className = '';
+    });
+  </script>
+</body>
+</html>
